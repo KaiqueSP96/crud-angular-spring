@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { CoursesService } from '../services/courses.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
-import { delay } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../models/course';
+
 
 @Component({
   selector: 'app-course-form',
@@ -17,7 +17,7 @@ export class CourseFormComponent implements OnInit {
   form =  this.formBuilder.group({
     _id: [''],
     name: ['', [Validators.required,
-      Validators.minLength(5),
+      Validators.minLength(4),
       Validators.maxLength(100)]
     ],
     category: ['', [Validators.required]]
@@ -28,16 +28,17 @@ export class CourseFormComponent implements OnInit {
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute){
 
-  }
+    }
+
 
   onSubmit(): void {
-    this.service.salvarCursos(this.form.value)
-      .subscribe(result => this.onSuccess(), erro => {
-        this.onError()
-      })
-  }
+      this.service.salvarCursos(this.form.value).subscribe({
+        next: () => this.onSuccess(),
+        error: () => this.onError()
+      });
+    }
 
   onCancel (): void {
     this.location.back()
@@ -72,7 +73,6 @@ export class CourseFormComponent implements OnInit {
       const requiresLength: number = field.errors ? field.errors['minlength']['requiredLength'] : 5;
       return `Tamanho mínimo precisa ser ${requiresLength} caracteres.`;
     }
-
     return 'Campo Inválido.'
   }
 }

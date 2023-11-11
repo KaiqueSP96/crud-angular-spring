@@ -7,9 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Data
 @Entity
+@SQLDelete(sql = "UPDATE Course SET status = 'Inativo' WHERE id = ?")
+@Where(clause = "status = 'Ativo'")
 //@Table(name = "cursos")
 public class Course {
 
@@ -29,4 +33,10 @@ public class Course {
     @Pattern(regexp = "Back-end | Front-End")
     @Column(nullable = false)
     private String category;
+
+    @NotBlank
+    @NotNull
+    @Pattern(regexp = "Ativo|Inativo")
+    @Column(nullable = false)
+    private String status = "Ativo";
 }
