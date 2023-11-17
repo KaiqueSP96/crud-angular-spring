@@ -1,16 +1,13 @@
 package com.kaique.crudspring.controller;
 
-import com.kaique.crudspring.exception.RecordNotFoundException;
+import com.kaique.crudspring.dto.CourseDTO;
 import com.kaique.crudspring.model.Course;
 import com.kaique.crudspring.repository.CourseRepository;
 import com.kaique.crudspring.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,23 +26,23 @@ public class CourseController {
     }
 
     @GetMapping
-    public @ResponseBody List<Course> listCourses() {
+    public @ResponseBody List<CourseDTO> listCourses() {
         return courseService.listCourses();
     }
 
     @GetMapping("/{id}")
-    public Optional<Course> findById(@PathVariable @NotNull @Positive Long id) {
+    public Optional<CourseDTO> findById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Course createCurse(@RequestBody @Valid Course course) {
+    public CourseDTO createCurse(@RequestBody @Valid CourseDTO course) {
         return (courseService.createCurse(course));
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable Long id, @RequestBody Course course) {
+    public CourseDTO update(@PathVariable Long id, @RequestBody CourseDTO course) {
         return courseService.update(id, course);
     }
 
