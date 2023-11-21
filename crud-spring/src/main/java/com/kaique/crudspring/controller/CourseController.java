@@ -1,7 +1,6 @@
 package com.kaique.crudspring.controller;
 
 import com.kaique.crudspring.dto.CourseDTO;
-import com.kaique.crudspring.model.Course;
 import com.kaique.crudspring.repository.CourseRepository;
 import com.kaique.crudspring.service.CourseService;
 import jakarta.validation.Valid;
