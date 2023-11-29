@@ -1,11 +1,14 @@
 package com.kaique.crudspring.controller;
 
 import com.kaique.crudspring.dto.CourseDTO;
+import com.kaique.crudspring.dto.CoursePageDTO;
 import com.kaique.crudspring.repository.CourseRepository;
 import com.kaique.crudspring.service.CourseService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +28,12 @@ public class CourseController {
     }
 
     @GetMapping
-    public @ResponseBody List<CourseDTO> listCourses() {
-        return courseService.listCourses();
+    public CoursePageDTO listCourses(
+            @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+            @RequestParam(defaultValue = "10") @Positive @Max(10)
+            int pageSize
+    ) {
+        return courseService.listCourses(page, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -36,8 +43,8 @@ public class CourseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseDTO createCurse(@RequestBody @Valid CourseDTO course) {
-        return (courseService.createCurse(course));
+    public CourseDTO createCurse(@RequestBody @Valid @NotNull CourseDTO course) {
+        return courseService.createCurse(course);
     }
 
     @PutMapping("/{id}")
