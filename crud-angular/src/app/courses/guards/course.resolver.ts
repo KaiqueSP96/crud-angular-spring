@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Course } from '../models/course';
 import { CoursesService } from '../services/courses.service';
 
-export const courseResolver: ResolveFn<Observable<Course>> = (route, state,  service: CoursesService = inject(CoursesService)) => {
+export const CourseResolver: ResolveFn<Observable<Course>> = (route, state,  service: CoursesService = inject(CoursesService)) => {
 
   if (route.params?.['id']){
     return service.carregarPorId(route.params['id']);
